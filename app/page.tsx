@@ -1,103 +1,139 @@
-import Image from "next/image";
+import Link from 'next/link';
+
+// Typ für Fächer
+interface Subject {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tasksCount: number;
+}
+
+// Placeholder-Daten für die Fächer
+const subjects: Subject[] = [
+  {
+    id: 'mathematik',
+    title: 'Mathematik',
+    description: 'Algebra, Geometrie, Analysis und mehr - interaktive Aufgaben für alle Schwierigkeitsgrade.',
+    image: '/images/placeholder-math.jpg', // Später durch echte Bilder ersetzen
+    tasksCount: 120
+  },
+  {
+    id: 'deutsch',
+    title: 'Deutsch',
+    description: 'Grammatik, Rechtschreibung, Literatur und Textanalyse mit maßgeschneiderten Übungen.',
+    image: '/images/placeholder-german.jpg',
+    tasksCount: 85
+  },
+  {
+    id: 'englisch',
+    title: 'Englisch',
+    description: 'Vokabeln, Grammatik und Sprachübungen für alle Niveaustufen.',
+    image: '/images/placeholder-english.jpg',
+    tasksCount: 98
+  },
+  {
+    id: 'informatik',
+    title: 'Informatik',
+    description: 'Grundlagen der Programmierung, Datenbanken und Webentwicklung für Einsteiger.',
+    image: '/images/placeholder-coding.jpg',
+    tasksCount: 75
+  }
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="space-y-8">
+      {/* Hero-Sektion */}
+      <section className="bg-indigo-50 rounded-xl p-8 text-center">
+        <h1 className="text-4xl font-bold text-indigo-800 mb-4">Willkommen bei LernPlus</h1>
+        <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-6">
+          Entdecke interaktives Lernen mit personalisierten Aufgaben und KI-gestütztem Feedback.
+        </p>
+        <div className="flex justify-center gap-4">
+          <Link 
+            href="/auth/register" 
+            className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Jetzt starten
+          </Link>
+          <Link 
+            href="/subjects" 
+            className="px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-md hover:bg-indigo-50 transition"
           >
-            Read our docs
-          </a>
+            Fächer entdecken
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </section>
+
+      {/* Fächerübersicht */}
+      <section>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Unsere Fächer</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {subjects.map((subject) => (
+            <Link 
+              href={`/subjects/${subject.id}`} 
+              key={subject.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+            >
+              {/* Placeholder für Bild - später durch echte Bilder ersetzen */}
+              <div className="h-40 bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Fachbild: {subject.title}</span>
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-800">{subject.title}</h3>
+                <p className="text-gray-600 mt-2 mb-4 text-sm">{subject.description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-indigo-600 font-medium">{subject.tasksCount} Aufgaben</span>
+                  <span className="text-sm text-gray-500">Mehr erfahren →</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Funktionsübersicht */}
+      <section className="bg-gray-50 rounded-xl p-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">So funktioniert LernPlus</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow text-center">
+            <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl font-bold">1</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Aufgaben entdecken</h3>
+            <p className="text-gray-600">Wähle aus einer Vielzahl von Fächern und Themen die passenden Aufgaben.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow text-center">
+            <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl font-bold">2</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Interaktiv lernen</h3>
+            <p className="text-gray-600">Bearbeite Aufgaben und erhalte sofortige Rückmeldung zu deinen Antworten.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow text-center">
+            <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl font-bold">3</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Fortschritt verfolgen</h3>
+            <p className="text-gray-600">Verfolge deinen Lernfortschritt und erhalte personalisierte Empfehlungen.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Registrierungs-CTA */}
+      <section className="bg-indigo-600 text-white rounded-xl p-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">Bereit zum Lernen?</h2>
+        <p className="mb-6 max-w-2xl mx-auto">
+          Registriere dich jetzt kostenlos und erhalte Zugang zu allen Lernmaterialien und personalisierten Lernwegen.
+        </p>
+        <Link 
+          href="/auth/register" 
+          className="px-6 py-3 bg-white text-indigo-600 font-medium rounded-md hover:bg-indigo-50 transition"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Kostenlos registrieren
+        </Link>
+      </section>
     </div>
   );
 }
