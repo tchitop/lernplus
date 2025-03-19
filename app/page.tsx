@@ -144,7 +144,7 @@ export default function Home() {
       {/* Subjects Section - Visually distinct cards */}
       <section className="px-4">
         <div className="flex justify-between items-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-800">Beliebte Fächer</h2>
+          <h2 className="text-3xl font-bold text-gray-400">Beliebte Fächer</h2>
           <Link 
             href="/subjects" 
             className="text-indigo-600 font-medium flex items-center hover:text-indigo-800 transition-colors"
@@ -179,7 +179,7 @@ export default function Home() {
 
       {/* How It Works - Clear process visualization */}
       <section className="px-4">
-        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">So funktioniert LernPlus</h2>
+        <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">So funktioniert LernPlus</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           {/* Connecting line */}
           <div className="hidden md:block absolute h-0.5 bg-indigo-200 top-24 left-0 right-0 z-0"></div>
@@ -187,7 +187,7 @@ export default function Home() {
           {/* Step 1 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
             <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">1</div>
-            <h3 className="text-xl font-bold text-center mb-4">Wähle dein Fach</h3>
+            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Wähle dein Fach</h3>
             <p className="text-gray-600 text-center">
               Entdecke eine Vielzahl von Fächern und wähle die Themen, die dich interessieren oder in denen du dich verbessern möchtest.
             </p>
@@ -196,7 +196,7 @@ export default function Home() {
           {/* Step 2 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
             <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">2</div>
-            <h3 className="text-xl font-bold text-center mb-4">Löse Aufgaben</h3>
+            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Löse Aufgaben</h3>
             <p className="text-gray-600 text-center">
               Bearbeite interaktive Aufgaben mit steigendem Schwierigkeitsgrad und erhalte sofortiges, intelligentes Feedback zu deinen Antworten.
             </p>
@@ -205,7 +205,7 @@ export default function Home() {
           {/* Step 3 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
             <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">3</div>
-            <h3 className="text-xl font-bold text-center mb-4">Verfolge deinen Fortschritt</h3>
+            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Verfolge deinen Fortschritt</h3>
             <p className="text-gray-600 text-center">
               Sieh dir deinen Lernfortschritt an, entdecke deine Stärken und arbeite gezielt an deinen Schwächen mit personalisierten Empfehlungen.
             </p>
@@ -215,7 +215,7 @@ export default function Home() {
       
       {/* Testimonials */}
       <section className="px-4">
-        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Was unsere Nutzer sagen</h2>
+        <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">Was unsere Nutzer sagen</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-indigo-500">

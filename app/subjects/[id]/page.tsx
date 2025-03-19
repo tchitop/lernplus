@@ -321,7 +321,7 @@ export default function SubjectDetailPage() {
 
       {/* Categories Grid */}
       <section className="px-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Themengebiete</h2>
+        <h2 className="text-2xl font-bold text-gray-400 mb-6">Themengebiete</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subject.categories.map((category) => (
             <Link 
@@ -330,7 +330,7 @@ export default function SubjectDetailPage() {
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100 flex justify-between items-center"
             >
               <div>
-                <h3 className="text-xl font-semibold mb-1">{category.name}</h3>
+                <h3 className="text-xl font-semibold mb-1 text-gray-600">{category.name}</h3>
                 <p className="text-gray-600 mb-2">{category.description}</p>
                 <span className="text-sm text-indigo-600 font-medium">{category.taskCount} Aufgaben</span>
               </div>
@@ -343,7 +343,7 @@ export default function SubjectDetailPage() {
       {/* Popular Tasks */}
       <section className="px-4">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Beliebte Aufgaben</h2>
+          <h2 className="text-2xl font-bold text-gray-400">Beliebte Aufgaben</h2>
           <Link 
             href={`/subjects/${subject.id}/tasks`} 
             className="text-indigo-600 font-medium flex items-center hover:text-indigo-800 transition-colors"
@@ -360,7 +360,7 @@ export default function SubjectDetailPage() {
             >
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-semibold flex-1">{task.title}</h3>
+                  <h3 className="text-lg font-semibold flex-1 text-gray-600" >{task.title}</h3>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     task.difficulty === 'Leicht' ? 'bg-green-100 text-green-800' :
                     task.difficulty === 'Mittel' ? 'bg-yellow-100 text-yellow-800' :
