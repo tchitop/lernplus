@@ -98,30 +98,30 @@ export default function Navbar() {
                     : 'hover:bg-white/10 text-white group-hover:bg-white/10'
                 }`}
               >
-                Fächer <ChevronDown className="ml-1 h-4 w-4" />
+                Klassenstufen <ChevronDown className="ml-1 h-4 w-4" />
               </button>
               <div className="absolute left-0 z-10 hidden group-hover:block bg-white rounded-lg shadow-lg p-2 w-64 text-gray-800 border border-gray-100">
                 <div className="grid grid-cols-2 gap-1">
-                  <Link href="/subjects/mathematik" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
+                  <Link href="/classes/5-6" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
                     <span className="text-lg mr-2">📊</span>
-                    <span>Mathematik</span>
+                    <span>Klasse 5-6</span>
                   </Link>
-                  <Link href="/subjects/deutsch" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
+                  <Link href="/classes/7-8" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
                     <span className="text-lg mr-2">📝</span>
-                    <span>Deutsch</span>
+                    <span>Klasse 7-8</span>
                   </Link>
-                  <Link href="/subjects/englisch" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
+                  <Link href="/classes/9-10" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
                     <span className="text-lg mr-2">🌍</span>
-                    <span>Englisch</span>
+                    <span>Klasse 9-10</span>
                   </Link>
-                  <Link href="/subjects/informatik" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
+                  <Link href="/classes/oberstufe" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
                     <span className="text-lg mr-2">💻</span>
-                    <span>Informatik</span>
+                    <span>Oberstufe</span>
                   </Link>
                 </div>
                 <div className="mt-2 pt-2 border-t border-gray-100">
                   <Link href="/subjects" className="block p-3 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg">
-                    Alle Fächer anzeigen
+                    Alle Klassen
                   </Link>
                 </div>
               </div>
