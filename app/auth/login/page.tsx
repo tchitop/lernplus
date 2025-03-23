@@ -1,29 +1,67 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (isLoggedIn) {
+      const userRole = localStorage.getItem('userRole') || 'student';
+      router.push(`/dashboard/${userRole}`);
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       // For demo purposes only - in a real app, this would be an API call
-      if (email === 'demo@lernplus.de' && password === 'password') {
-        window.location.href = '/dashboard/student';
+      // Define some demo user credentials
+      const demoUsers = [
+        { email: 'demo@lernplus.de', password: 'password', role: 'student' },
+        { email: 'lehrer@lernplus.de', password: 'password', role: 'teacher' },
+        { email: 'admin@lernplus.de', password: 'password', role: 'admin' }
+      ];
+      
+      const user = demoUsers.find(user => user.email === email && user.password === password);
+      
+      if (user) {
+        // Store login state and user role in localStorage
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userEmail', user.email);
+        
+        if (rememberMe) {
+          // If "remember me" is checked, we could set a longer expiration
+          // In a real app, this would involve setting proper cookies/tokens
+          localStorage.setItem('rememberLogin', 'true');
+        }
+        
+        // Redirect to the appropriate dashboard
+        router.push(`/dashboard/${user.role}`);
       } else {
         setErrorMessage('Ungültige E-Mail oder Passwort.');
         setIsLoading(false);
       }
-    }, 1500);
+    } catch (error) {
+      setErrorMessage('Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -97,6 +135,8 @@ export default function LoginPage() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
@@ -130,6 +170,16 @@ export default function LoginPage() {
                 Kostenlos registrieren
               </Link>
             </p>
+          </div>
+
+          {/* Demo credentials hint */}
+          <div className="mt-6 p-4 bg-indigo-50 rounded-lg">
+            <p className="text-sm text-indigo-700 font-medium mb-2">Demo-Zugangsdaten:</p>
+            <ul className="text-xs text-indigo-600 space-y-1">
+              <li>Schüler: demo@lernplus.de / password</li>
+              <li>Lehrer: lehrer@lernplus.de / password</li>
+              <li>Admin: admin@lernplus.de / password</li>
+            </ul>
           </div>
         </div>
 

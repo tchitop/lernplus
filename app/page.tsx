@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, Users, Award, ChevronRight } from 'lucide-react';
 
@@ -8,8 +11,8 @@ interface Subject {
   description: string;
   image: string;
   tasksCount: number;
-  color: string; // Added color property for visual differentiation
-  icon: string; // Added icon property
+  color: string;
+  icon: string;
 }
 
 // Enhanced subject data with colors and icons
@@ -75,59 +78,106 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check login status on component mount
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+  }, []);
+
   return (
     <div className="space-y-20 pb-16">
-      {/* Hero Section - Modern and eye-catching */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600">
-        <div className="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px]"></div>
-        <div className="relative px-8 py-20 sm:px-12 md:px-16 md:py-24 lg:py-32 flex flex-col items-center text-white text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Lerne mit <span className="text-yellow-300">KI-gestütztem</span> Feedback
-          </h1>
-          <p className="text-xl md:text-2xl mb-10 text-indigo-100 max-w-3xl">
-            Entdecke personalisierte Lernwege, interaktive Übungen und sofortiges Feedback für deinen Bildungserfolg.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <Link 
-              href="/auth/register" 
-              className="px-8 py-4 bg-white text-indigo-700 rounded-xl font-semibold text-lg hover:bg-indigo-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Kostenlos starten
-            </Link>
-            <Link 
-              href="/subjects" 
-              className="px-8 py-4 bg-indigo-800/50 backdrop-blur-sm text-white rounded-xl font-semibold text-lg border border-indigo-400/30 hover:bg-indigo-700/60 transition-all"
-            >
-              Fächer entdecken
-            </Link>
+      {/* Hero Section - Only show if not logged in */}
+      {!isLoggedIn && (
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600">
+          <div className="absolute inset-0 bg-grid-white/[0.2] bg-[length:16px_16px]"></div>
+          <div className="relative px-8 py-20 sm:px-12 md:px-16 md:py-24 lg:py-32 flex flex-col items-center text-white text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
+              Lerne mit <span className="text-yellow-300">KI-gestütztem</span> Feedback
+            </h1>
+            <p className="text-xl md:text-2xl mb-10 text-indigo-100 max-w-3xl">
+              Entdecke personalisierte Lernwege, interaktive Übungen und sofortiges Feedback für deinen Bildungserfolg.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <Link 
+                href="/auth/register" 
+                className="px-8 py-4 bg-white text-indigo-700 rounded-xl font-semibold text-lg hover:bg-indigo-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                Kostenlos starten
+              </Link>
+              <Link 
+                href="/subjects" 
+                className="px-8 py-4 bg-indigo-800/50 backdrop-blur-sm text-white rounded-xl font-semibold text-lg border border-indigo-400/30 hover:bg-indigo-700/60 transition-all"
+              >
+                Fächer entdecken
+              </Link>
+            </div>
+            
+            {/* Highlight cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full">
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                  <BookOpen className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Personalisiertes Lernen</h3>
+                <p className="text-indigo-100">Auf dein Niveau angepasste Aufgaben und individuelle Lernpfade</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Community-Support</h3>
+                <p className="text-indigo-100">Lerne gemeinsam mit Gleichgesinnten und erhalte Hilfe von Tutoren</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                  <Award className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">KI-Feedback</h3>
+                <p className="text-indigo-100">Sofortiges, intelligentes Feedback zu jeder bearbeiteten Aufgabe</p>
+              </div>
+            </div>
           </div>
-          
-          {/* Highlight cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full">
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-bold text-xl mb-2">Personalisiertes Lernen</h3>
-              <p className="text-indigo-100">Auf dein Niveau angepasste Aufgaben und individuelle Lernpfade</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <Users className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-bold text-xl mb-2">Community-Support</h3>
-              <p className="text-indigo-100">Lerne gemeinsam mit Gleichgesinnten und erhalte Hilfe von Tutoren</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <Award className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="font-bold text-xl mb-2">KI-Feedback</h3>
-              <p className="text-indigo-100">Sofortiges, intelligentes Feedback zu jeder bearbeiteten Aufgabe</p>
+        </section>
+      )}
+
+      {/* Section for logged-in users - Welcome and quick access */}
+      {isLoggedIn && (
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl p-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">Willkommen zurück!</h1>
+            <p className="text-xl text-gray-600 mb-6">Setze dein Lernen fort oder starte etwas Neues.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+              <Link href="/dashboard/continue" className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lg text-indigo-700 mb-2">Weiterlernen</h3>
+                <p className="text-gray-600 mb-4">Mache dort weiter, wo du aufgehört hast.</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">Mathematik</span>
+                  <ChevronRight className="h-5 w-5 text-indigo-400" />
+                </div>
+              </Link>
+              <Link href="/subjects" className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lg text-indigo-700 mb-2">Neues Thema</h3>
+                <p className="text-gray-600 mb-4">Entdecke neue Fächer und Themen zum Lernen.</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">Alle Fächer</span>
+                  <ChevronRight className="h-5 w-5 text-indigo-400" />
+                </div>
+              </Link>
+              <Link href="/chat/new" className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lg text-indigo-700 mb-2">KI-Assistent</h3>
+                <p className="text-gray-600 mb-4">Stelle Fragen an deinen persönlichen Lernassistenten.</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">Neuer Chat</span>
+                  <ChevronRight className="h-5 w-5 text-indigo-400" />
+                </div>
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Statistics Section */}
       <section className="px-4">
@@ -177,79 +227,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works - Clear process visualization */}
-      <section className="px-4">
-        <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">So funktioniert LernPlus</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-          {/* Connecting line */}
-          <div className="hidden md:block absolute h-0.5 bg-indigo-200 top-24 left-0 right-0 z-0"></div>
-          
-          {/* Step 1 */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
-            <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">1</div>
-            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Wähle dein Fach</h3>
-            <p className="text-gray-600 text-center">
-              Entdecke eine Vielzahl von Fächern und wähle die Themen, die dich interessieren oder in denen du dich verbessern möchtest.
-            </p>
-          </div>
-          
-          {/* Step 2 */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
-            <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">2</div>
-            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Löse Aufgaben</h3>
-            <p className="text-gray-600 text-center">
-              Bearbeite interaktive Aufgaben mit steigendem Schwierigkeitsgrad und erhalte sofortiges, intelligentes Feedback zu deinen Antworten.
-            </p>
-          </div>
-          
-          {/* Step 3 */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
-            <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">3</div>
-            <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Verfolge deinen Fortschritt</h3>
-            <p className="text-gray-600 text-center">
-              Sieh dir deinen Lernfortschritt an, entdecke deine Stärken und arbeite gezielt an deinen Schwächen mit personalisierten Empfehlungen.
-            </p>
-          </div>
-        </div>
-      </section>
-      
-      {/* Testimonials */}
-      <section className="px-4">
-        <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">Was unsere Nutzer sagen</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-indigo-500">
-              <div className="flex items-center mb-4">
-                {[...Array(testimonial.stars)].map((_, i) => (
-                  <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+      {/* Only show these sections when not logged in */}
+      {!isLoggedIn && (
+        <>
+          {/* How It Works - Clear process visualization */}
+          <section className="px-4">
+            <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">So funktioniert LernPlus</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+              {/* Connecting line */}
+              <div className="hidden md:block absolute h-0.5 bg-indigo-200 top-24 left-0 right-0 z-0"></div>
+              
+              {/* Step 1 */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
+                <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">1</div>
+                <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Wähle dein Fach</h3>
+                <p className="text-gray-600 text-center">
+                  Entdecke eine Vielzahl von Fächern und wähle die Themen, die dich interessieren oder in denen du dich verbessern möchtest.
+                </p>
               </div>
-              <p className="text-gray-700 mb-6 italic">"{testimonial.text}"</p>
-              <p className="text-gray-600 font-medium">{testimonial.author}</p>
+              
+              {/* Step 2 */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
+                <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">2</div>
+                <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Löse Aufgaben</h3>
+                <p className="text-gray-600 text-center">
+                  Bearbeite interaktive Aufgaben mit steigendem Schwierigkeitsgrad und erhalte sofortiges, intelligentes Feedback zu deinen Antworten.
+                </p>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="bg-white rounded-2xl shadow-lg p-8 relative z-10">
+                <div className="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 mx-auto">3</div>
+                <h3 className="text-xl font-bold text-center mb-4 text-gray-600">Verfolge deinen Fortschritt</h3>
+                <p className="text-gray-600 text-center">
+                  Sieh dir deinen Lernfortschritt an, entdecke deine Stärken und arbeite gezielt an deinen Schwächen mit personalisierten Empfehlungen.
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
+          
+          {/* Testimonials */}
+          <section className="px-4">
+            <h2 className="text-3xl font-bold text-gray-400 mb-12 text-center">Was unsere Nutzer sagen</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-indigo-500">
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.stars)].map((_, i) => (
+                      <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-6 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-600 font-medium">{testimonial.author}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
-      {/* CTA Section */}
-      <section className="px-4">
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl overflow-hidden shadow-xl">
-          <div className="px-8 py-12 sm:px-12 lg:px-16 text-center text-white max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Bereit, dein Lernpotenzial zu entfalten?</h2>
-            <p className="text-xl mb-10 text-indigo-100">
-              Registriere dich kostenlos und beginne deinen personalisierten Lernweg mit LernPlus.
-            </p>
-            <Link 
-              href="/auth/register" 
-              className="px-8 py-4 bg-white text-indigo-700 rounded-xl font-semibold text-lg inline-block hover:bg-indigo-50 transition-all shadow-lg"
-            >
-              Kostenlos registrieren
-            </Link>
-          </div>
-        </div>
-      </section>
+          {/* CTA Section */}
+          <section className="px-4">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl overflow-hidden shadow-xl">
+              <div className="px-8 py-12 sm:px-12 lg:px-16 text-center text-white max-w-4xl mx-auto">
+                <h2 className="text-3xl font-bold mb-6">Bereit, dein Lernpotenzial zu entfalten?</h2>
+                <p className="text-xl mb-10 text-indigo-100">
+                  Registriere dich kostenlos und beginne deinen personalisierten Lernweg mit LernPlus.
+                </p>
+                <Link 
+                  href="/auth/register" 
+                  className="px-8 py-4 bg-white text-indigo-700 rounded-xl font-semibold text-lg inline-block hover:bg-indigo-50 transition-all shadow-lg"
+                >
+                  Kostenlos registrieren
+                </Link>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
     </div>
   );
 }
