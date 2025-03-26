@@ -10,9 +10,11 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isSubjectsOpen, setIsSubjectsOpen] = useState<boolean>(false);
   
-  // Placeholder for auth state (replace with your auth system)
+  // State for authentication and user role
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<string>('student');
+  const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -26,6 +28,34 @@ export default function Navbar() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Sync authentication state
+  useEffect(() => {
+    const checkAuth = () => {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
+
+      if (loggedIn) {
+        const role = localStorage.getItem('userRole') || 'student';
+        const name = localStorage.getItem('userName') || 'Benutzer';
+        const email = localStorage.getItem('userEmail') || '';
+
+        setUserRole(role);
+        setUserName(name);
+        setUserEmail(email);
+      }
+    };
+
+    checkAuth();
+
+    // Listen for login/logout events from other components
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   // Toggle for mobile menu
@@ -57,6 +87,21 @@ export default function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isProfileOpen]);
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    
+    // Trigger storage event to sync across components
+    window.dispatchEvent(new Event('storage'));
+    
+    // Close dropdowns
+    setIsMenuOpen(false);
+    setIsProfileOpen(false);
+  };
 
   return (
     <nav 
@@ -120,7 +165,7 @@ export default function Navbar() {
                   </Link>
                 </div>
                 <div className="mt-2 pt-2 border-t border-gray-100">
-                  <Link href="/subjects" className="block p-3 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg">
+                  <Link href="/classes" className="block p-3 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg">
                     Alle Klassen
                   </Link>
                 </div>
@@ -175,8 +220,8 @@ export default function Navbar() {
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-2 text-gray-800 border border-gray-100">
                     <div className="p-4 border-b border-gray-100">
-                      <p className="font-medium">Max Mustermann</p>
-                      <p className="text-sm text-gray-500">max@example.com</p>
+                      <p className="font-medium">{userName}</p>
+                      <p className="text-sm text-gray-500">{userEmail}</p>
                     </div>
                     <Link 
                       href={userRole === 'teacher' ? '/dashboard/teacher' : '/dashboard/student'} 
@@ -194,7 +239,7 @@ export default function Navbar() {
                       <span>Einstellungen</span>
                     </Link>
                     <button 
-                      onClick={() => setIsLoggedIn(false)}
+                      onClick={handleLogout}
                       className="w-full mt-2 p-3 text-center bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
                     >
                       Abmelden
@@ -266,49 +311,49 @@ export default function Navbar() {
                   onClick={toggleSubjects}
                   className="flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-indigo-50"
                 >
-                  <span>Fächer</span>
+                  <span>Klassenstufen</span>
                   <ChevronDown className={`h-4 w-4 transition-transform ${isSubjectsOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isSubjectsOpen && (
                   <div className="pl-4 space-y-1 mt-1">
                     <Link
-                      href="/subjects/mathematik"
+                      href="/classes/5-6"
                       className="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <span className="text-lg mr-2">📊</span>
-                      <span>Mathematik</span>
+                      <span>Klasse 5-6</span>
                     </Link>
                     <Link
-                      href="/subjects/deutsch"
+                      href="/classes/7-8"
                       className="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <span className="text-lg mr-2">📝</span>
-                      <span>Deutsch</span>
+                      <span>Klasse 7-8</span>
                     </Link>
                     <Link
-                      href="/subjects/englisch"
+                      href="/classes/9-10"
                       className="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <span className="text-lg mr-2">🌍</span>
-                      <span>Englisch</span>
+                      <span>Klasse 9-10</span>
                     </Link>
                     <Link
-                      href="/subjects/informatik"
+                      href="/classes/oberstufe"
                       className="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <span className="text-lg mr-2">💻</span>
-                      <span>Informatik</span>
+                      <span>Oberstufe</span>
                     </Link>
                     <Link
-                      href="/subjects"
+                      href="/classes"
                       className="px-4 py-2 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Alle Fächer anzeigen
+                      Alle Klassen
                     </Link>
                   </div>
                 )}
@@ -359,7 +404,7 @@ export default function Navbar() {
                     </Link>
                     <button 
                       onClick={() => {
-                        setIsLoggedIn(false);
+                        handleLogout();
                         setIsMenuOpen(false);
                       }}
                       className="w-full mt-2 p-3 text-center bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"

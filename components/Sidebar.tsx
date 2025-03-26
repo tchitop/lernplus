@@ -6,8 +6,8 @@ import {
   BarChart, 
   BookOpen, 
   Calendar, 
-  ChevronLeft, 
-  ChevronRight, 
+  Menu, 
+  X,
   FileText, 
   Home, 
   MessageSquare,
@@ -44,6 +44,7 @@ export default function Sidebar({ isOpen, toggleSidebar, userRole = 'student' }:
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom of chat
   useEffect(() => {
@@ -52,26 +53,36 @@ export default function Sidebar({ isOpen, toggleSidebar, userRole = 'student' }:
     }
   }, [chatMessages]);
 
-  // Close dropdown when clicking outside
+  // Close dropdown and sidebar when clicking outside on mobile
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      // Close dropdown if clicked outside
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
+
+      // Close sidebar on mobile when clicking outside
+      if (
+        window.innerWidth < 768 && 
+        sidebarRef.current && 
+        !sidebarRef.current.contains(event.target as Node) && 
+        isOpen
+      ) {
+        toggleSidebar();
+      }
     }
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isOpen, toggleSidebar]);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
     
-    // Add user message
     setChatMessages([...chatMessages, { role: 'user', content: inputMessage }]);
     
-    // Simulate AI response based on chat type
     setTimeout(() => {
       let response = '';
       
@@ -131,20 +142,43 @@ export default function Sidebar({ isOpen, toggleSidebar, userRole = 'student' }:
 
   return (
     <>
-      {/* Toggle button - completely outside the sidebar for consistent positioning */}
-      <button 
-        onClick={toggleSidebar}
-        className="fixed z-50 left-2 top-22 md:top-26 bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-indigo-700 transition-colors"
-      >
-        {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-      </button>
+      {/* Mobile Navbar Toggle */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button 
+          onClick={toggleSidebar}
+          className="bg-indigo-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-indigo-700 transition-colors"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
 
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/30 z-30 md:hidden" 
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
       <div 
-        className={`fixed left-0 top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] bg-white shadow-lg transition-all duration-300 z-40 overflow-hidden ${
-          isOpen ? 'w-64' : 'w-0'
-        }`}
+        ref={sidebarRef}
+        className={`
+          fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 transition-transform duration-300
+          md:static md:translate-x-0
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${isOpen ? 'pt-16' : ''}
+        `}
       >
-        <div className="h-full flex flex-col justify-between overflow-y-auto min-w-64">
+        <div className="h-full flex flex-col justify-between overflow-y-auto">
+          {/* Close button for mobile */}
+          <button 
+            onClick={toggleSidebar}
+            className="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800"
+          >
+            <X size={24} />
+          </button>
+
           {/* Navigation links */}
           <div className="p-4 space-y-2">
             <Link 
@@ -227,8 +261,8 @@ export default function Sidebar({ isOpen, toggleSidebar, userRole = 'student' }:
                 <MessageSquare className="h-5 w-5 text-indigo-600" />
                 <span className="ml-3">KI-Lernassistent</span>
                 {activeChat ? 
-                  <ChevronLeft className="h-4 w-4 ml-auto" /> : 
-                  <ChevronRight className="h-4 w-4 ml-auto" />
+                  <ChevronDown className="h-4 w-4 ml-auto rotate-180" /> : 
+                  <ChevronDown className="h-4 w-4 ml-auto" />
                 }
               </button>
               

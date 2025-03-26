@@ -14,12 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userRole, setUserRole] = useState('student');
  
   // Simulate auth check
   useEffect(() => {
-    // This would typically be a real auth check
     const checkAuth = () => {
       // Check if user is logged in (e.g. from localStorage, cookies, etc.)
       const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -51,9 +50,10 @@ export default function RootLayout({
                 userRole={userRole}
               />
             )}
-            <div className={`flex flex-col flex-grow transition-all duration-300 ${
-              isLoggedIn && isSidebarOpen ? 'ml-64' : 'ml-0'
-            }`}>
+            <div className={`
+              flex flex-col flex-grow transition-all duration-300
+              ${isLoggedIn && isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}
+            `}>
               <main className="flex-grow">
                 <div className="container mx-auto px-4 py-8">
                   {children}
