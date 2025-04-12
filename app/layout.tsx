@@ -16,22 +16,35 @@ export default function RootLayout({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userRole, setUserRole] = useState('student');
-
-  // Simulate auth check
+  
+  // Check authentication status and listen for changes
   useEffect(() => {
     const checkAuth = () => {
       const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
       setIsLoggedIn(loggedIn);
+      
+      // Get user role
       const role = localStorage.getItem('userRole') || 'student';
       setUserRole(role);
     };
+    
+    // Initial check
     checkAuth();
+    
+    // Listen for login/logout events from other components
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
-
+  
+  // Function to toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
-
+  }
+  
   return (
     <html lang="de">
       <body className={inter.className}>
@@ -47,10 +60,7 @@ export default function RootLayout({
             )}
             <div className={`
               flex flex-col flex-grow transition-all duration-300
-              ${isLoggedIn 
-                ? (isSidebarOpen ? 'md:ml-64' : 'md:ml-16')
-                : 'md:ml-0'
-              }
+              ${isLoggedIn && isSidebarOpen ? 'md:ml-64' : isLoggedIn ? 'md:ml-16' : 'ml-0'}
             `}>
               <main className="flex-grow">
                 <div className="container mx-auto px-4 py-8">

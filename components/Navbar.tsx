@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown, User, LogIn, BookOpen, Award, Settings } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -101,6 +102,7 @@ export default function Navbar() {
     // Close dropdowns
     setIsMenuOpen(false);
     setIsProfileOpen(false);
+
   };
 
   return (

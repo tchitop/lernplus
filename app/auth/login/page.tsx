@@ -71,10 +71,11 @@ export default function LoginPage() {
           localStorage.setItem('rememberLogin', 'true');
         }
         
+        // Trigger storage event to notify other components
+        window.dispatchEvent(new Event('storage'));
+        
         // Weiterleitung mit Email-Parameter
-        const newParams = new URLSearchParams();
-        newParams.set('email', email);
-        router.push(`/dashboard/${user.role}?${newParams.toString()}`);
+        router.push(`/dashboard/${user.role}`);
       } else {
         setErrorMessage('Ungültige E-Mail oder Passwort.');
         setIsLoading(false);
@@ -222,8 +223,6 @@ export default function LoginPage() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-
-
                   <p className="ml-3 text-base">Sofortiges KI-gestütztes Feedback</p>
                 </li>
                 <li className="flex items-start">
