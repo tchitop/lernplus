@@ -1,373 +1,248 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { X, Calendar, MessageSquare, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import { 
-  BarChart, 
-  BookOpen, 
-  Calendar, 
-  Menu, 
-  X,
-  FileText, 
-  Home, 
-  MessageSquare,
-  Settings, 
-  Star, 
-  Clock,
-  Lightbulb,
-  Users,
-  Activity,
-  Send,
-  ChevronDown
-} from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
-  userRole?: string;
+  userRole: string;
 }
 
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
-type ChatType = 'homework' | 'explain' | 'general';
-
-export default function Sidebar({ isOpen, toggleSidebar, userRole = 'student' }: SidebarProps) {
-  const [activeChat, setActiveChat] = useState(false);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { role: 'assistant', content: 'Hallo! Wie kann ich dir heute helfen?' }
+export default function Sidebar({ isOpen, toggleSidebar, userRole }: SidebarProps) {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'chat' | 'calendar'>('chat');
+  
+  // Sample calendar events
+  const [events, setEvents] = useState([
+    { id: 1, title: 'Mathestunde', date: '2025-04-15', time: '14:00' },
+    { id: 2, title: 'Biologie Nachhilfe', date: '2025-04-16', time: '16:30' },
+    { id: 3, title: 'Deutschprüfung', date: '2025-04-20', time: '09:00' },
+    { id: 4, title: 'Physik Projektabgabe', date: '2025-04-22', time: '12:00' },
   ]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [chatType, setChatType] = useState<ChatType>('general');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const sidebarRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom of chat
+  // Check for mobile viewport
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [chatMessages]);
-
-  // Close dropdown and sidebar when clicking outside on mobile
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      // Close dropdown if clicked outside
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-
-      // Close sidebar on mobile when clicking outside
-      if (
-        window.innerWidth < 768 && 
-        sidebarRef.current && 
-        !sidebarRef.current.contains(event.target as Node) && 
-        isOpen
-      ) {
-        toggleSidebar();
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
-  }, [isOpen, toggleSidebar]);
-
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
     
-    setChatMessages([...chatMessages, { role: 'user', content: inputMessage }]);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     
-    setTimeout(() => {
-      let response = '';
-      
-      switch (chatType) {
-        case 'homework':
-          response = 'Ich helfe dir gerne mit deinen Hausaufgaben. Kannst du mir mehr Details dazu geben?';
-          break;
-        case 'explain':
-          response = 'Ich erkläre dir gerne dieses Konzept. Was möchtest du genau verstehen?';
-          break;
-        default:
-          response = 'Danke für deine Nachricht! Wie kann ich dir weiterhelfen?';
-      }
-      
-      setChatMessages(prev => [...prev, { role: 'assistant', content: response }]);
-    }, 1000);
-    
-    setInputMessage('');
-  };
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  const handleChatTypeChange = (type: ChatType) => {
-    setChatType(type);
-    setChatMessages([
-      { 
-        role: 'assistant', 
-        content: type === 'homework' 
-          ? 'Wie kann ich dir bei deinen Hausaufgaben helfen?' 
-          : type === 'explain'
-          ? 'Welches Konzept soll ich dir erklären?'
-          : 'Hallo! Wie kann ich dir heute helfen?'
-      }
-    ]);
-    setDropdownOpen(false);
-  };
-
-  const getChatTypeLabel = (type: ChatType): { label: string, icon: JSX.Element } => {
-    switch (type) {
-      case 'homework':
-        return { 
-          label: 'Hausaufgabenhilfe', 
-          icon: <Clock className="h-4 w-4 mr-2 text-indigo-500" /> 
-        };
-      case 'explain':
-        return { 
-          label: 'Konzepte erklären', 
-          icon: <Lightbulb className="h-4 w-4 mr-2 text-indigo-500" /> 
-        };
-      default:
-        return { 
-          label: 'Allgemeiner Chat', 
-          icon: <MessageSquare className="h-4 w-4 mr-2 text-indigo-500" /> 
-        };
+  // Group events by date
+  const eventsByDate = events.reduce((groups, event) => {
+    if (!groups[event.date]) {
+      groups[event.date] = [];
     }
+    groups[event.date].push(event);
+    return groups;
+  }, {} as Record<string, typeof events>);
+
+  // Format date for display
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('de-DE', { 
+      weekday: 'long', 
+      day: 'numeric', 
+      month: 'long' 
+    });
   };
 
-  const currentChatType = getChatTypeLabel(chatType);
+  // Sample chat messages
+  const chatMessages = [
+    { id: 1, sender: 'ai', text: 'Hallo! Wie kann ich dir heute bei deinem Lernen helfen?' },
+    { id: 2, sender: 'user', text: 'Ich brauche Hilfe bei Mathematik, Funktionen.' },
+    { id: 3, sender: 'ai', text: 'Gerne! Welchen Aspekt von Funktionen möchtest du verstehen?' }
+  ];
 
   return (
     <>
-      {/* Mobile Navbar Toggle */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
+      {/* Mobile Toggle Button - only visible on mobile when sidebar is closed */}
+      {isMobile && !isOpen && (
         <button 
           onClick={toggleSidebar}
-          className="bg-indigo-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-indigo-700 transition-colors"
+          className="fixed bottom-4 left-4 z-40 bg-indigo-600 text-white p-3 rounded-full shadow-lg"
+          aria-label="Open Sidebar"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          <ChevronRight className="h-6 w-6" />
         </button>
-      </div>
-
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/30 z-30 md:hidden" 
-          onClick={toggleSidebar}
-        />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <div 
-        ref={sidebarRef}
-        className={`
-          fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 transition-transform duration-300
-          md:static md:translate-x-0
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          ${isOpen ? 'pt-16' : ''}
-        `}
+        className={`fixed z-30 top-16 bottom-0 transition-all duration-300 ${
+          isMobile 
+            ? isOpen 
+              ? 'inset-0 top-16 bg-white' // Mobile open: full screen below navbar
+              : '-left-full' // Mobile closed: off-screen
+            : isOpen 
+              ? 'left-0 w-64' // Desktop open: partial width
+              : 'left-0 w-16' // Desktop closed: icon only
+        } bg-white shadow-lg flex flex-col`}
       >
-        <div className="h-full flex flex-col justify-between overflow-y-auto">
-          {/* Close button for mobile */}
-          <button 
-            onClick={toggleSidebar}
-            className="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800"
-          >
-            <X size={24} />
-          </button>
-
-          {/* Navigation links */}
-          <div className="p-4 space-y-2">
-            <Link 
-              href="/dashboard" 
-              className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-            >
-              <Home className="h-5 w-5 text-indigo-600" />
-              <span className="ml-3">Dashboard</span>
-            </Link>
-
-            <Link 
-              href="/subjects" 
-              className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-            >
-              <BookOpen className="h-5 w-5 text-indigo-600" />
-              <span className="ml-3">Fächer</span>
-            </Link>
-
-            <Link 
-              href="/assignments" 
-              className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-            >
-              <FileText className="h-5 w-5 text-indigo-600" />
-              <span className="ml-3">Aufgaben</span>
-            </Link>
-
-            {userRole === 'student' && (
-              <>
-                <Link 
-                  href="/progress" 
-                  className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-                >
-                  <BarChart className="h-5 w-5 text-indigo-600" />
-                  <span className="ml-3">Fortschritt</span>
-                </Link>
-
-                <Link 
-                  href="/achievements" 
-                  className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-                >
-                  <Star className="h-5 w-5 text-indigo-600" />
-                  <span className="ml-3">Erfolge</span>
-                </Link>
-              </>
-            )}
-
-            {userRole === 'teacher' && (
-              <>
-                <Link 
-                  href="/students" 
-                  className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-                >
-                  <Users className="h-5 w-5 text-indigo-600" />
-                  <span className="ml-3">Schüler</span>
-                </Link>
-
-                <Link 
-                  href="/analytics" 
-                  className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-                >
-                  <Activity className="h-5 w-5 text-indigo-600" />
-                  <span className="ml-3">Statistiken</span>
-                </Link>
-              </>
-            )}
-
-            <Link 
-              href="/calendar" 
-              className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-            >
-              <Calendar className="h-5 w-5 text-indigo-600" />
-              <span className="ml-3">Kalender</span>
-            </Link>
-            
-            <div className="pt-4 mt-4 border-t border-gray-100">
-              <button
-                onClick={() => setActiveChat(!activeChat)}
-                className="flex items-center w-full text-left text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4 border-b">
+          {(!isMobile || isOpen) && (
+            <>
+              <h2 className="font-bold text-lg text-indigo-600">
+                {isOpen ? (activeTab === 'chat' ? 'KI-Lernassistent' : 'Terminkalender') : ''}
+              </h2>
+              <button 
+                onClick={toggleSidebar} 
+                className="p-1 rounded-lg hover:bg-gray-100"
+                aria-label={isOpen ? "Minimize Sidebar" : "Expand Sidebar"}
               >
-                <MessageSquare className="h-5 w-5 text-indigo-600" />
-                <span className="ml-3">KI-Lernassistent</span>
-                {activeChat ? 
-                  <ChevronDown className="h-4 w-4 ml-auto rotate-180" /> : 
-                  <ChevronDown className="h-4 w-4 ml-auto" />
+                {isMobile ? 
+                  <X className="h-6 w-6 text-gray-700" /> : 
+                  isOpen ? 
+                    <ChevronLeft className="h-6 w-6 text-gray-700" /> : 
+                    <ChevronRight className="h-6 w-6 text-gray-700" />
                 }
               </button>
-              
-              {activeChat && (
-                <div className="mt-2">
-                  {/* Chat type dropdown */}
-                  <div className="px-2 mb-2 relative" ref={dropdownRef}>
-                    <button
-                      onClick={() => setDropdownOpen(!dropdownOpen)}
-                      className="w-full flex items-center justify-between text-sm p-2 border rounded-lg bg-white hover:bg-gray-50 transition-colors text-gray-600"
-                    >
-                      <div className="flex items-center">
-                        {currentChatType.icon}
-                        <span>{currentChatType.label}</span>
-                      </div>
-                      <ChevronDown className={`h-4 w-4 transition-transform ${dropdownOpen ? 'transform rotate-180' : ''}`} />
-                    </button>
-                    
-                    {dropdownOpen && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border rounded-lg shadow-lg text-gray-500" >
-                        <button 
-                          onClick={() => handleChatTypeChange('homework')}
-                          className="w-full flex items-center p-2 text-sm hover:bg-indigo-50 transition-colors"
-                        >
-                          <Clock className="h-4 w-4 mr-2 text-indigo-500" />
-                          <span>Hausaufgabenhilfe</span>
-                        </button>
-                        <button 
-                          onClick={() => handleChatTypeChange('explain')}
-                          className="w-full flex items-center p-2 text-sm hover:bg-indigo-50 transition-colors"
-                        >
-                          <Lightbulb className="h-4 w-4 mr-2 text-indigo-500" />
-                          <span>Konzepte erklären</span>
-                        </button>
-                        <button 
-                          onClick={() => handleChatTypeChange('general')}
-                          className="w-full flex items-center p-2 text-sm hover:bg-indigo-50 transition-colors"
-                        >
-                          <MessageSquare className="h-4 w-4 mr-2 text-indigo-500" />
-                          <span>Allgemeiner Chat</span>
-                        </button>
-                      </div>
-                    )}
+            </>
+          )}
+        </div>
+
+        {/* Tab Navigation - only visible when expanded */}
+        {isOpen && (
+          <div className="flex border-b">
+            <button
+              onClick={() => setActiveTab('chat')}
+              className={`flex items-center justify-center flex-1 py-3 ${
+                activeTab === 'chat' 
+                  ? 'border-b-2 border-indigo-600 text-indigo-600 font-medium' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <MessageSquare className="h-5 w-5 mr-2" />
+              <span>KI-Chat</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('calendar')}
+              className={`flex items-center justify-center flex-1 py-3 ${
+                activeTab === 'calendar' 
+                  ? 'border-b-2 border-indigo-600 text-indigo-600 font-medium' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <Calendar className="h-5 w-5 mr-2" />
+              <span>Termine</span>
+            </button>
+          </div>
+        )}
+
+        {/* Sidebar Content */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Icon Only View (Desktop Collapsed) */}
+          {!isOpen && !isMobile && (
+            <div className="flex flex-col items-center py-4 space-y-6">
+              <button 
+                onClick={() => {
+                  setActiveTab('chat');
+                  toggleSidebar();
+                }}
+                className="p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                aria-label="Open Chat"
+              >
+                <MessageSquare className="h-6 w-6" />
+              </button>
+              <button 
+                onClick={() => {
+                  setActiveTab('calendar');
+                  toggleSidebar();
+                }}
+                className="p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                aria-label="Open Calendar"
+              >
+                <Calendar className="h-6 w-6" />
+              </button>
+            </div>
+          )}
+
+          {/* Chat View */}
+          {isOpen && activeTab === 'chat' && (
+            <div className="flex flex-col h-full">
+              <div className="flex-1 p-4 overflow-y-auto">
+                {chatMessages.map(message => (
+                  <div 
+                    key={message.id} 
+                    className={`mb-4 max-w-xs ${
+                      message.sender === 'user' 
+                        ? 'ml-auto bg-indigo-600 text-white' 
+                        : 'mr-auto bg-gray-100 text-gray-800'
+                    } rounded-lg p-3`}
+                  >
+                    {message.text}
                   </div>
-                  
-                  {/* Chat messages container */}
-                  <div className="bg-gray-50 rounded-lg mx-2 p-2 h-48 overflow-y-auto mb-2">
-                    {chatMessages.map((msg, index) => (
+                ))}
+              </div>
+              <div className="p-4 border-t">
+                <div className="flex items-center">
+                  <input 
+                    type="text" 
+                    placeholder="Schreibe deine Frage..." 
+                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-400"
+                  />
+                  <button className="ml-2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Calendar View */}
+          {isOpen && activeTab === 'calendar' && (
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-medium text-gray-500">Kommende Termine</h3>
+                <button className="text-sm text-indigo-600 hover:text-indigo-800">
+                  + Termin hinzufügen
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                {Object.keys(eventsByDate).sort().map(date => (
+                  <div key={date} className="space-y-2">
+                    <h4 className="font-medium text-gray-500">{formatDate(date)}</h4>
+                    {eventsByDate[date].map(event => (
                       <div 
-                        key={index} 
-                        className={`mb-2 p-2 rounded-lg max-w-56 ${
-                          msg.role === 'user' 
-                            ? 'bg-indigo-100 text-gray-800 ml-auto' 
-                            : 'bg-white border border-gray-200 text-gray-700'
-                        }`}
+                        key={event.id} 
+                        className="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-indigo-200 cursor-pointer"
                       >
-                        <p className="text-xs">{msg.content}</p>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h5 className="font-medium text-gray-500">{event.title}</h5>
+                            <p className="text-sm text-gray-400">{event.time} Uhr</p>
+                          </div>
+                          <div className="text-sm text-indigo-600">Details</div>
+                        </div>
                       </div>
                     ))}
-                    <div ref={messagesEndRef} />
                   </div>
-                  
-                  {/* Chat input */}
-                  <div className="px-2 flex">
-                    <input
-                      type="text"
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      placeholder="Nachricht schreiben..."
-                      className="flex-1 text-xs p-2 border rounded-l-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 text-gray-500"
-                    />
-                    <button
-                      onClick={handleSendMessage}
-                      disabled={!inputMessage.trim()}
-                      className="bg-indigo-600 text-white p-2 rounded-r-lg disabled:bg-indigo-300"
-                    >
-                      <Send size={14} />
-                    </button>
-                  </div>
-                  
-                  {/* Expand button */}
-                  <div className="mt-2 text-center">
-                    <Link 
-                      href={`/chat/${chatType}`}
-                      className="text-xs text-indigo-600 hover:text-indigo-800"
-                    >
-                      Chat in vollem Fenster öffnen
-                    </Link>
-                  </div>
-                </div>
-              )}
+                ))}
+              </div>
+              
+              <div className="mt-8 text-center">
+                <Link
+                  href="/calendar"
+                  className="inline-flex items-center text-indigo-600 hover:text-indigo-800"
+                >
+                  <span>Vollständigen Kalender öffnen</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </Link>
+              </div>
             </div>
-          </div>
-          
-          {/* Settings at the bottom */}
-          <div className="p-4 border-t border-gray-100">
-            <Link 
-              href="/settings" 
-              className="flex items-center text-gray-700 hover:bg-indigo-50 rounded-lg p-3 transition-colors"
-            >
-              <Settings className="h-5 w-5 text-indigo-600" />
-              <span className="ml-3">Einstellungen</span>
-            </Link>
-          </div>
+          )}
         </div>
       </div>
     </>
