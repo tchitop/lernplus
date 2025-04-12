@@ -184,14 +184,14 @@ export default function Navbar() {
             </Link>
             
             <Link 
-              href="/pricing" 
+              href="/dashboard/mediaSearch" 
               className={`px-4 py-2 rounded-lg ${
                 isScrolled 
                   ? 'hover:bg-gray-100 text-gray-700' 
                   : 'hover:bg-white/10 text-white'
               }`}
             >
-              Preise
+              Buch zu Material
             </Link>
           </div>
 
@@ -368,11 +368,11 @@ export default function Navbar() {
               </Link>
               
               <Link
-                href="/pricing"
+                href="/dashboard/mediaSearch"
                 className="flex items-center px-4 py-3 rounded-lg hover:bg-indigo-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Preise
+                Buch zu Material
               </Link>
               
               <div className="border-t border-gray-100 my-2 pt-2">

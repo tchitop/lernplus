@@ -52,7 +52,7 @@ export default function RootLayout({
             )}
             <div className={`
               flex flex-col flex-grow transition-all duration-300
-              ${isLoggedIn && isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}
+              ${isLoggedIn && isSidebarOpen ? 'md:ml-64' : 'md:ml-16'}
             `}>
               <main className="flex-grow">
                 <div className="container mx-auto px-4 py-8">
