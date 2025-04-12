@@ -16,23 +16,18 @@ export default function RootLayout({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userRole, setUserRole] = useState('student');
- 
+
   // Simulate auth check
   useEffect(() => {
     const checkAuth = () => {
-      // Check if user is logged in (e.g. from localStorage, cookies, etc.)
       const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
       setIsLoggedIn(loggedIn);
-     
-      // Get user role
       const role = localStorage.getItem('userRole') || 'student';
       setUserRole(role);
     };
-   
     checkAuth();
   }, []);
 
-  // Function to toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -52,7 +47,10 @@ export default function RootLayout({
             )}
             <div className={`
               flex flex-col flex-grow transition-all duration-300
-              ${isLoggedIn && isSidebarOpen ? 'md:ml-64' : 'md:ml-16'}
+              ${isLoggedIn 
+                ? (isSidebarOpen ? 'md:ml-64' : 'md:ml-16')
+                : 'md:ml-0'
+              }
             `}>
               <main className="flex-grow">
                 <div className="container mx-auto px-4 py-8">

@@ -2,15 +2,40 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+
+  // Parameter aus URL lesen
+  const emailParam = searchParams.get('email');
+  const passwordParam = searchParams.get('password');
+
+  // Setze Werte wenn Parameter existieren
+  useEffect(() => {
+    if (emailParam) setEmail(emailParam);
+    if (passwordParam) {
+      setPassword(passwordParam);
+      // Entferne Passwort aus URL nach dem Laden
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete('password');
+      router.replace(`${pathname}?${newParams.toString()}`);
+    }
+  }, [emailParam, passwordParam, pathname, router, searchParams]);
+
+  // Update URL bei Email-Änderungen
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    email ? newParams.set('email', email) : newParams.delete('email');
+    router.replace(`${pathname}?${newParams.toString()}`);
+  }, [email, pathname, router, searchParams]);
 
   // Check if user is already logged in
   useEffect(() => {
@@ -27,11 +52,8 @@ export default function LoginPage() {
     setErrorMessage('');
     
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // For demo purposes only - in a real app, this would be an API call
-      // Define some demo user credentials
       const demoUsers = [
         { email: 'demo@lernplus.de', password: 'password', role: 'student' },
         { email: 'lehrer@lernplus.de', password: 'password', role: 'teacher' },
@@ -41,19 +63,18 @@ export default function LoginPage() {
       const user = demoUsers.find(user => user.email === email && user.password === password);
       
       if (user) {
-        // Store login state and user role in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', user.role);
         localStorage.setItem('userEmail', user.email);
         
         if (rememberMe) {
-          // If "remember me" is checked, we could set a longer expiration
-          // In a real app, this would involve setting proper cookies/tokens
           localStorage.setItem('rememberLogin', 'true');
         }
         
-        // Redirect to the appropriate dashboard
-        router.push(`/dashboard/${user.role}`);
+        // Weiterleitung mit Email-Parameter
+        const newParams = new URLSearchParams();
+        newParams.set('email', email);
+        router.push(`/dashboard/${user.role}?${newParams.toString()}`);
       } else {
         setErrorMessage('Ungültige E-Mail oder Passwort.');
         setIsLoading(false);
@@ -129,7 +150,6 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -172,7 +192,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Demo credentials hint */}
           <div className="mt-6 p-4 bg-indigo-50 rounded-lg">
             <p className="text-sm text-indigo-700 font-medium mb-2">Demo-Zugangsdaten:</p>
             <ul className="text-xs text-indigo-600 space-y-1">
@@ -203,6 +222,8 @@ export default function LoginPage() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
+
+
                   <p className="ml-3 text-base">Sofortiges KI-gestütztes Feedback</p>
                 </li>
                 <li className="flex items-start">
