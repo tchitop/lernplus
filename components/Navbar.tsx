@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown, User, LogIn, BookOpen, Award, Settings } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -115,8 +116,8 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className={`rounded-lg p-1 ${isScrolled ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600'}`}>
-              <BookOpen className="h-6 w-6" />
+            <div className={`rounded-lg p-1 ${isScrolled ? 'text-white' : 'text-indigo-600'}`}>
+              <Image src="/alpaka-logo.png" alt="Logo" className="w-8 h-10" width={100} height={100} />
             </div>
             <span className={`text-2xl font-bold ${isScrolled ? 'text-indigo-600' : 'text-white'}`}>
               LernPlus
