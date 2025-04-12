@@ -56,12 +56,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="flex items-center hover:text-indigo-300 transition-colors">
-                  <ChevronRight className="h-4 w-4 mr-2" />
-                  <span>Preise & Pakete</span>
-                </Link>
-              </li>
-              <li>
                 <Link href="/blog" className="flex items-center hover:text-indigo-300 transition-colors">
                   <ChevronRight className="h-4 w-4 mr-2" />
                   <span>Lern-Blog</span>

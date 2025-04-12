@@ -100,9 +100,12 @@ export default function Navbar() {
     // Trigger storage event to sync across components
     window.dispatchEvent(new Event('storage'));
     
+
+
     // Close dropdowns
     setIsMenuOpen(false);
     setIsProfileOpen(false);
+    window.location.reload();
 
   };
 
