@@ -14,10 +14,12 @@ export default function Student () {
     return (
         <div className="text-amber-100">
             {!isLoggedIn && (
-                <div>Test</div>
+                <div className='text-center justify-center flex flex-col'>
+                    <div className='text-red-600'>Tut mir leid, du hast keinen Zugriff auf diese Seite.</div>
+                </div>
             )}
             {isLoggedIn && (
-                <div>Test Test</div>
+                <div className='text-center justify-center'></div>
             )}
         </div>
     )

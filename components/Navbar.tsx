@@ -191,6 +191,17 @@ export default function Navbar() {
             >
               Buch zu Material
             </Link>
+
+            <Link 
+              href="/dashboard/berufschance" 
+              className={`px-4 py-2 rounded-lg ${
+                isScrolled 
+                  ? 'hover:bg-gray-100 text-gray-700' 
+                  : 'hover:bg-white/10 text-white'
+              }`}
+            >
+              KI-Berufschance
+            </Link>
           </div>
 
           {/* Auth buttons or profile */}
@@ -364,6 +375,11 @@ export default function Navbar() {
               >
                 Buch zu Material
               </Link>
+
+              <Link href="/dashboard/berufschance" className='flex items-center px-4 py-3 rounded-lg hover:bg-indigo-50' onClick={() => setIsMenuOpen(false)}>
+                KI-Berufe der Zukunft
+              </Link>
+
               
               <div className="border-t border-gray-100 my-2 pt-2">
                 {isLoggedIn ? (

@@ -46,7 +46,7 @@ export default function Footer() {
               <li>
                 <Link href="/subjects" className="flex items-center hover:text-indigo-300 transition-colors">
                   <ChevronRight className="h-4 w-4 mr-2" />
-                  <span>Fächer entdecken</span>
+                  <span>Klassen entdecken</span>
                 </Link>
               </li>
               <li>
