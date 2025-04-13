@@ -109,56 +109,24 @@ export default function ClassPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">Lehrplangerecht</h3>
-            <p className="text-gray-600 text-center">
-              Alle Inhalte sind nach aktuellem Lehrplan gestaltet und helfen dir, die Anforderungen deiner Klassenstufe zu erfüllen.
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">Angepasste Lernmaterialien</h3>
+            <p className="text-gray-600">
+              Alle Materialien sind speziell für deine Klassenstufe entwickelt und helfen dir,
+              dich gezielt weiterzuentwickeln.
             </p>
           </div>
-
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="bg-green-100 text-green-600 w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">Personalisiert</h3>
-            <p className="text-gray-600 text-center">
-              Adaptives Lernen, das sich an dein individuelles Tempo und deine Stärken anpasst.
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">Strukturiertes Lernen</h3>
+            <p className="text-gray-600">
+              Unsere Themen sind klar strukturiert, damit du Schritt für Schritt neue Inhalte meistern kannst.
             </p>
           </div>
-
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <div className="bg-purple-100 text-purple-600 w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">Vielfältig</h3>
-            <p className="text-gray-600 text-center">
-              Eine breite Palette an Übungen und Materialien, die verschiedene Lerntypen ansprechen.
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">Motivation & Fortschritt</h3>
+            <p className="text-gray-600">
+              Verfolge deinen Fortschritt und bleibe motiviert durch sichtbare Erfolge.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-indigo-600 rounded-2xl p-8 text-white text-center shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Bereit zum Lernen?</h2>
-        <p className="mb-6 max-w-xl mx-auto text-indigo-100">
-          Melde dich jetzt an und starte deine persönliche Lernreise mit tausenden interaktiven Aufgaben.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition-colors">
-            Jetzt anmelden
-          </button>
-          <button className="bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-800 transition-colors">
-            Mehr erfahren
-          </button>
         </div>
       </section>
     </div>
