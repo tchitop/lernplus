@@ -197,8 +197,6 @@ export default function LoginPage() {
             <p className="text-sm text-indigo-700 font-medium mb-2">Demo-Zugangsdaten:</p>
             <ul className="text-xs text-indigo-600 space-y-1">
               <li>Schüler: demo@lernplus.de / password</li>
-              <li>Lehrer: lehrer@lernplus.de / password</li>
-              <li>Admin: admin@lernplus.de / password</li>
             </ul>
           </div>
         </div>

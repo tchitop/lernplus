@@ -1,12 +1,36 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function MediaSearch() {
+  const searchParams = useSearchParams();
   const [input, setInput] = useState('');
   const [summaryTitle, setSummaryTitle] = useState('');
   const [summaryText, setSummaryText] = useState('');
   const [showSummaryBox, setShowSummaryBox] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+
+  // Beim Laden der Komponente den Query-Parameter auslesen
+  useEffect(() => {
+    const themeParam = searchParams.get('theme');
+    if (themeParam) {
+      setInput(themeParam);
+      
+      // Prüfe, ob das Thema in den Büchern existiert
+      const matchedBook = books.find(book => 
+        book.toLowerCase().includes(themeParam.toLowerCase())
+      );
+      
+      if (matchedBook) {
+        showSummary(matchedBook);
+        // Auch Vorschläge aktualisieren
+        const filtered = books.filter(book => 
+          book.toLowerCase().includes(themeParam.toLowerCase())
+        );
+        setSuggestions(filtered);
+      }
+    }
+  }, [searchParams]);
 
   const books = [
     "Harry Potter und der Stein der Weisen", 
