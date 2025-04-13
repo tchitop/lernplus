@@ -58,7 +58,8 @@ export default function MediaSearch() {
     "Woyzeck",
     "Maria Stuart",
     "Nathan der Weise",
-    "Nathan und seine Kinder"
+    "Nathan und seine Kinder",
+    "SCHEIßE"
   ];
 
   const summaries = {
@@ -124,7 +125,7 @@ Mehr Infos auf <a href="https://de.wikipedia.org/wiki/Harry_Potter_und_der_Stein
 
   return (
     <div className="bg-purple-50 font-sans p-10">
-      <h1 className="text-center text-purple-800 text-2xl font-bold mb-6">📚 Meine Buchsammlung</h1>
+      <h1 className="text-center text-purple-800 text-2xl font-bold mb-6">📚Buchsammlung</h1>
 
       <div className="max-w-xl mx-auto relative">
         <input 
