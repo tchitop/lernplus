@@ -63,36 +63,35 @@ export default function SubjectPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-16 pt-8">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center space-x-2 text-sm text-gray-500">
+      <nav className="flex items-center space-x-2 text-sm text-white">
         <Link href="/" className="hover:text-indigo-600 transition-colors">Startseite</Link>
         <ChevronRight className="h-4 w-4" />
         <Link href="/classes" className="hover:text-indigo-600 transition-colors">Klassenstufen</Link>
         <ChevronRight className="h-4 w-4" />
         <Link href={`/classes/${classId}`} className="hover:text-indigo-600 transition-colors">Klasse {classId}</Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-gray-900">{subject.title}</span>
+        <span className="font-medium text-white">{subject.title}</span>
       </nav>
 
       {/* Subject Header */}
       <div className="flex items-center gap-4">
         <span className="text-3xl">{subject.icon}</span>
-        <h1 className="text-3xl font-bold text-gray-800">{subject.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-60">{subject.title}</h1>
       </div>
 
       {/* Topics List */}
       <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Themen in {subject.title}</h2>
+        <h2 className="text-xl font-semibold text-gray-375 mb-4">Themen in {subject.title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subjectTopics.map((topic) => (
             <Link 
               key={topic.id} 
               href={`/classes/${classId}/${subjectId}/${topic.id}`}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow transition-all border border-gray-100 group"
-            >
+              className="bg-gray-100 rounded-xl p-6 shadow-sm group gradient">
               <h3 className="text-lg font-semibold mb-2 text-gray-800 group-hover:text-indigo-600 transition-colors">
                 {topic.name}
               </h3>
-              <p className="text-gray-600">{topic.description}</p>
+              <p className="text-gray-600 group-hover:text-indigo-600 transition-colors">{topic.description}</p>
             </Link>
           ))}
         </div>

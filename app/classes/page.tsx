@@ -52,16 +52,20 @@ export default function ClassPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-16 pt-8">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center space-x-2 text-sm text-gray-500">
-        <Link href="/" className="hover:text-indigo-600 transition-colors">Startseite</Link>
-        <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-gray-900">Klassenstufen</span>
+      <nav className="flex items-center space-x-2 text-sm text-white">
+        <div className="group flex items-center hover:text-indigo-600 duration-500 transition-colors text-gray-100">
+          <Link href="/" className="">
+            Startseite
+          </Link>
+          <ChevronRight className="h-4 w-4 text-gray-100 group-hover:text-indigo-600 duration-500 transition-colors ml-[9px]" />
+        </div>
+        <span className="font-medium text-white">Klassenstufen</span>
       </nav>
 
       {/* Hero Section */}
       <section className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">Klassenstufen</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-grey-0">Klassenstufen</h1>
+        <p className="text-xl text-gray-250 mx-auto">
           Wähle deine Klassenstufe, um auf dich zugeschnittene Lernmaterialien und Aufgaben zu entdecken.
         </p>
       </section>
@@ -95,7 +99,7 @@ export default function ClassPage() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-2xl mt-16">
+      <section className="bg-stone-200 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-2xl mt-16">
         <div className="max-w-5xl mx-auto text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Lernen nach deinem Niveau</h2>
           <p className="text-gray-600 text-lg">

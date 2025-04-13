@@ -142,6 +142,7 @@ export default function Navbar() {
             
             {/* Subjects dropdown */}
             <div className="relative group">
+              <Link href="/classes">
               <button 
                 className={`flex items-center px-4 py-2 rounded-lg ${
                   isScrolled 
@@ -151,6 +152,7 @@ export default function Navbar() {
               >
                 Klassenstufen <ChevronDown className="ml-1 h-4 w-4" />
               </button>
+              </Link>
               <div className="absolute left-0 z-10 hidden group-hover:block bg-white rounded-lg shadow-lg p-2 w-64 text-gray-800 border border-gray-100">
                 <div className="grid grid-cols-2 gap-1">
                   <Link href="/classes/5-6" className="flex items-center p-3 rounded-lg hover:bg-indigo-50">
@@ -177,17 +179,7 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-            
-            <Link 
-              href="/about" 
-              className={`px-4 py-2 rounded-lg ${
-                isScrolled 
-                  ? 'hover:bg-gray-100 text-gray-700' 
-                  : 'hover:bg-white/10 text-white'
-              }`}
-            >
-              Über uns
-            </Link>
+
             
             <Link 
               href="/dashboard/mediaSearch" 
@@ -364,14 +356,6 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-              
-              <Link
-                href="/about"
-                className="flex items-center px-4 py-3 rounded-lg hover:bg-indigo-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Über uns
-              </Link>
               
               <Link
                 href="/dashboard/mediaSearch"

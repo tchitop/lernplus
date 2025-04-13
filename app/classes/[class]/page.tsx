@@ -66,22 +66,30 @@ export default function ClassPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-16 pt-8">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center space-x-2 text-sm text-gray-500">
-        <Link href="/" className="hover:text-indigo-600 transition-colors">Startseite</Link>
-        <ChevronRight className="h-4 w-4" />
-        <Link href="/classes" className="hover:text-indigo-600 transition-colors">Klassenstufen</Link>
-        <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-gray-900">{classLevel.name}</span>
+      <nav className="flex items-center space-x-2 text-sm text-white">
+        <div className="group flex items-center hover:text-indigo-600 duration-500 transition-colors text-gray-100">
+          <Link href="/" className="">
+            Startseite
+          </Link>
+          <ChevronRight className="h-4 w-4 text-gray-100 group-hover:text-indigo-600 duration-500 transition-colors ml-[9px]" />
+        </div>
+        <div className="group flex items-center hover:text-indigo-600 duration-500 transition-colors text-gray-100">
+          <Link href="/classes" className="">
+            Klassenstufen
+          </Link>
+          <ChevronRight className="h-4 w-4 text-gray-100 group-hover:text-indigo-600 duration-500 transition-colors ml-[9px]" />
+        </div>
+        <span className="font-medium text-white">{classLevel.name}</span>
       </nav>
 
       {/* Class Header */}
-      <div className="flex items-center gap-4">
-        <h1 className="text-3xl font-bold text-gray-800">{classLevel.name}</h1>
+      <div className="flex items-center">
+        <h1 className="text-3xl font-bold text-gray-50">{classLevel.name}</h1>
       </div>
 
       {/* Subjects List */}
       <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Fächer in {classLevel.name}</h2>
+        <h2 className="text-xl text-gray-250 mb-4">Fächer in {classLevel.name}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Object.values(subjects).map((subject) => (
             <Link 
